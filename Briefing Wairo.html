@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing de identidad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:   #1A1A18;
+    --mid:     #888780;
+    --light:   #D3D1C7;
+    --vlight:  #F1EFE8;
+    --white:   #FFFFFF;
+    --pur:     #3C3489;
+    --purbg:   #EEEDFE;
+    --teal:    #085041;
+    --tealbg:  #E1F5EE;
+    --serif:   'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --sans:    'DM Sans', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--white);
+    color: var(--black);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HERO ─────────────────────────────────────────── */
+  .hero {
+    min-height: 100svh;
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 80% 60%, #2a2460 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .hero-main {
+    position: relative;
+    z-index: 1;
+    padding-bottom: 3rem;
+  }
+
+  .hero-title {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: clamp(52px, 9vw, 110px);
+    font-weight: 400;
+    line-height: 1.0;
+    letter-spacing: 0;
+    color: var(--white);
+    margin-bottom: 2rem;
+  }
+
+  .hero-title em {
+    font-style: normal;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .hero-intro {
+    max-width: 540px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--white);
+    color: var(--black);
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 14px 24px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .hero-cta:hover { opacity: 0.85; }
+  .hero-cta svg { width: 14px; height: 14px; }
+
+  /* ── FORM WRAPPER ─────────────────────────────────── */
+  .form-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 5rem 2rem 8rem;
+  }
+
+  /* ── SECTION ──────────────────────────────────────── */
+  .section {
+    margin-bottom: 4.5rem;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .section.visible { opacity: 1; transform: none; }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 0.5px solid var(--light);
+    margin-bottom: 2rem;
+  }
+
+  .section-num {
+    font-family: var(--serif);
+    font-size: 13px;
+    color: var(--mid);
+    min-width: 18px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+
+  /* ── QUESTION ─────────────────────────────────────── */
+  .q {
+    margin-bottom: 2.25rem;
+  }
+
+  .q-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+  .tag-c { background: var(--purbg); color: var(--pur); }
+  .tag-p { background: var(--tealbg); color: var(--teal); }
+
+  .q-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--black);
+    line-height: 1.45;
+    margin-bottom: 5px;
+  }
+
+  .q-sub {
+    font-size: 13px;
+    color: var(--mid);
+    font-style: italic;
+    margin-bottom: 10px;
+    line-height: 1.55;
+  }
+
+  /* ── INPUTS ───────────────────────────────────────── */
+  textarea, input[type="text"], input[type="email"] {
+    width: 100%;
+    background: var(--vlight);
+    border: 0.5px solid var(--light);
+    border-radius: 3px;
+    padding: 12px 14px;
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--black);
+    resize: vertical;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    outline: none;
+    appearance: none;
+  }
+
+  textarea { min-height: 68px; }
+  textarea.tall { min-height: 108px; }
+
+  textarea:focus, input:focus {
+    border-color: var(--black);
+    box-shadow: 0 0 0 3px rgba(26,26,24,0.06);
+  }
+
+  /* ── PILLS ────────────────────────────────────────── */
+  .pill-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 6px;
+  }
+
+  .pill-opt {
+    position: relative;
+  }
+
+  .pill-opt input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0; height: 0;
+  }
+
+  .pill-opt label {
+    display: inline-block;
+    padding: 7px 15px;
+    border: 0.5px solid var(--light);
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--mid);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    background: var(--white);
+  }
+
+  .pill-opt input:checked + label {
+    background: var(--black);
+    border-color: var(--black);
+    color: var(--white);
+  }
+
+  .pill-opt label:hover {
+    border-color: var(--black);
+    color: var(--black);
+  }
+
+  /* ── TWO COL ──────────────────────────────────────── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  @media (max-width: 560px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+
+  /* ── DIVIDER ──────────────────────────────────────── */
+  .divider {
+    border: none;
+    border-top: 0.5px solid var(--light);
+    margin: 3.5rem 0;
+  }
+
+  /* ── SUBMIT BLOCK ─────────────────────────────────── */
+  .submit-block {
+    padding: 2.5rem 0 0;
+  }
+
+  .submit-note {
+    font-size: 13px;
+    color: var(--mid);
+    margin-bottom: 1.5rem;
+    line-height: 1.65;
+    border-left: 2px solid var(--light);
+    padding-left: 14px;
+  }
+
+  .btn-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 16px 32px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .btn-submit:hover { opacity: 0.8; }
+  .btn-submit svg { width: 14px; height: 14px; }
+
+  /* ── SUCCESS ──────────────────────────────────────── */
+  #success {
+    display: none;
+    text-align: center;
+    padding: 6rem 2rem;
+  }
+
+  #success h2 {
+    font-family: var(--serif);
+    font-size: clamp(48px, 7vw, 80px);
+    color: var(--black);
+    margin-bottom: 1rem;
+  }
+
+  #success p {
+    font-size: 16px;
+    color: var(--mid);
+  }
+
+  /* ── FOOTER ───────────────────────────────────────── */
+  footer {
+    background: var(--black);
+    padding: 3rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  footer p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── PROGRESS BAR ─────────────────────────────────── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: var(--pur);
+    width: 0%;
+    z-index: 100;
+    transition: width 0.1s linear;
+  }
+
+  /* ── SECTION NUMBER FLOATER ────────────────────────── */
+  .section-floater {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    font-family: var(--serif);
+    font-size: 11px;
+    color: var(--mid);
+    letter-spacing: 0.08em;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .section-floater.show { opacity: 1; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 1.5rem; }
+    .form-wrap { padding: 3rem 1.25rem 5rem; }
+    footer { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+<div class="section-floater" id="floater"></div>
+
+<!-- ── HERO ──────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-top">
+    <span class="hero-label">Briefing de identidad</span>
+    <span class="hero-label">Dirección Creativa</span>
+  </div>
+  <div class="hero-main">
+    <h1 class="hero-title">Identidad Visual<br><em>Wairo.</em></h1>
+    <p class="hero-intro">Este cuestionario nos ayuda a entender vuestra marca antes de empezar. No hay respuestas correctas — cuanto más honesto y específico, mejor podremos trabajar juntos.</p>
+    <a href="#form" class="hero-cta">
+      Empezar
+      <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7 1v12M1 7l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<!-- ── FORM ───────────────────────────────────────────── -->
+<div id="form">
+  <div class="form-wrap">
+
+    <!-- REEMPLAZA "YOUR_FORM_ID" con tu ID de Formspree -->
+    <form id="briefing-form" action="https://formspree.io/f/mzdyebvp" method="POST">
+
+      <!-- I — El origen -->
+      <div class="section" data-section="I — El origen">
+        <div class="section-header">
+          <span class="section-num">I</span>
+          <span class="section-title">El origen</span>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">¿Por qué existe esta marca? No el pitch — el motivo real.</div>
+          <div class="q-sub">La rabia, la ilusión o el vacío que queríais llenar.</div>
+          <textarea name="origen_por_que" class="tall" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-p">Proyecto</span></div>
+          <div class="q-label">¿En qué momento está la marca ahora mismo?</div>
+          <div class="pill-group">
+            <div class="pill-opt"><input type="checkbox" name="momento[]" id="m1" value="Nace desde cero"><label for="m1">Nace desde cero</label></div>
+            <div class="pill-opt"><input type="checkbox" name="momento[]" id="m2" value="Rebrand / evolución"><label for="m2">Rebrand / evolución</label></div>
+            <div class="pill-opt"><input type="checkbox" name="momento[]" id="m3" value="Spin-off o nueva línea"><label for="m3">Spin-off o nueva línea</label></div>
+            <div class="pill-opt"><input type="checkbox" name="momento[]" id="m4" value="Expansión a nuevos mercados"><label for="m4">Expansión a nuevos mercados</label></div>
+          </div>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">Si la marca desapareciera mañana, ¿qué huella os gustaría que quedara?</div>
+          <textarea name="origen_huella" placeholder="Escribe aquí..."></textarea>
+        </div>
+      </div>
+
+      <!-- II — Lo que hacéis -->
+      <div class="section" data-section="II — Lo que hacéis">
+        <div class="section-header">
+          <span class="section-num">II</span>
+          <span class="section-title">Lo que hacéis</span>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-p">Proyecto</span></div>
+          <div class="q-label">¿Qué hace la marca? Descríbelo como si se lo contarais a alguien ajeno a vuestro sector.</div>
+          <textarea name="que_hace" class="tall" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-p">Proyecto</span></div>
+          <div class="q-label">¿Cuál es vuestra propuesta de valor? ¿Por qué alguien os elegiría frente a otros?</div>
+          <textarea name="propuesta_valor" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">¿Hay algo en lo que hacéis que sea difícil de explicar pero esencial para entenderos?</div>
+          <textarea name="dificil_explicar" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">¿Cómo debería sentirse alguien después de haber experimentado vuestro producto o servicio?</div>
+          <div class="q-sub">No el beneficio funcional — la emoción residual.</div>
+          <textarea name="emocion_residual" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-p">Proyecto</span></div>
+          <div class="q-label">¿En qué posicionamiento de precio opera la marca?</div>
+          <div class="pill-group">
+            <div class="pill-opt"><input type="checkbox" name="precio[]" id="p1" value="Accesible"><label for="p1">Accesible</label></div>
+            <div class="pill-opt"><input type="checkbox" name="precio[]" id="p2" value="Rango medio"><label for="p2">Rango medio</label></div>
+            <div class="pill-opt"><input type="checkbox" name="precio[]" id="p3" value="Premium"><label for="p3">Premium</label></div>
+            <div class="pill-opt"><input type="checkbox" name="precio[]" id="p4" value="Lujo"><label for="p4">Lujo</label></div>
+            <div class="pill-opt"><input type="checkbox" name="precio[]" id="p5" value="Variable / freemium"><label for="p5">Variable / freemium</label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- III — A quién va dirigido -->
+      <div class="section" data-section="III — Audiencia">
+        <div class="section-header">
+          <span class="section-num">III</span>
+          <span class="section-title">A quién va dirigido</span>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">¿Quién es vuestro cliente ideal? Descríbelo como persona, no como segmento.</div>
+          <div class="q-sub">Qué hace en su tiempo libre, qué consume, cómo toma decisiones, qué le preocupa.</div>
+          <textarea name="cliente_ideal" class="tall" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">¿Qué tienen en común las personas que os entienden de verdad?</div>
+          <textarea name="en_comun" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-p">Proyecto</span></div>
+          <div class="q-label">¿En qué geografías o culturas operará la marca?</div>
+          <textarea name="geografia" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">¿Hay alguien a quien definitivamente no va dirigida esta marca?</div>
+          <textarea name="no_dirigido" placeholder="Escribe aquí..."></textarea>
+        </div>
+      </div>
+
+      <!-- IV — Identidad y carácter -->
+      <div class="section" data-section="IV — Identidad">
+        <div class="section-header">
+          <span class="section-num">IV</span>
+          <span class="section-title">Identidad y carácter</span>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">Si la marca fuera una persona, ¿cómo sería?</div>
+          <div class="q-sub">Carácter, forma de hablar, cómo viste, qué lee, a qué bares va.</div>
+          <textarea name="marca_persona" class="tall" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">¿Qué cinco palabras definen a esta marca?</div>
+          <textarea name="cinco_palabras" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">¿Qué emoción debe ser la puerta de entrada a vuestro universo?</div>
+          <textarea name="emocion_entrada" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">¿Qué palabras, actitudes o estéticas nunca debería tener esta marca?</div>
+          <textarea name="nunca" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">¿Qué parte de vuestra esencia debe permanecer aunque todo lo demás evolucione?</div>
+          <textarea name="esencia_eterna" placeholder="Escribe aquí..."></textarea>
+        </div>
+      </div>
+
+      <!-- V — El clima -->
+      <div class="section" data-section="V — El clima">
+        <div class="section-header">
+          <span class="section-num">V</span>
+          <span class="section-title">El clima de la marca</span>
+        </div>
+
+        <div class="two-col">
+          <div class="q">
+            <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+            <div class="q-label">Si la marca fuera un clima, ¿cuál sería?</div>
+            <textarea name="clima" placeholder="Escribe aquí..."></textarea>
+          </div>
+          <div class="q">
+            <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+            <div class="q-label">¿Qué tipo de luz ilumina su universo?</div>
+            <div class="q-sub">Cálida, cenital, de primera hora, industrial...</div>
+            <textarea name="luz" placeholder="Escribe aquí..."></textarea>
+          </div>
+          <div class="q">
+            <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+            <div class="q-label">¿Qué texturas representan lo que hacéis?</div>
+            <div class="q-sub">Madera, niebla, seda, cemento, metal...</div>
+            <textarea name="texturas" placeholder="Escribe aquí..."></textarea>
+          </div>
+          <div class="q">
+            <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+            <div class="q-label">¿Qué objeto cotidiano podría ser el tótem de la marca?</div>
+            <textarea name="totem" placeholder="Escribe aquí..."></textarea>
+          </div>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">¿Qué símbolo — real o inventado — podría representarla sin palabras?</div>
+          <textarea name="simbolo" placeholder="Escribe aquí..."></textarea>
+        </div>
+      </div>
+
+      <!-- VI — Estética -->
+      <div class="section" data-section="VI — Estética">
+        <div class="section-header">
+          <span class="section-num">VI</span>
+          <span class="section-title">Estética y visualidad</span>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">Si la marca fuera un color, ¿cuál sería y por qué?</div>
+          <textarea name="color" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">¿Qué imagen no debería proyectar esta marca bajo ningún concepto?</div>
+          <textarea name="imagen_nunca" placeholder="Escribe aquí..."></textarea>
+        </div>
+      </div>
+
+      <!-- VII — Referentes -->
+      <div class="section" data-section="VII — Referentes">
+        <div class="section-header">
+          <span class="section-num">VII</span>
+          <span class="section-title">Referentes</span>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">¿Qué marcas, artistas, colectivos o proyectos os inspiran — dentro o fuera de vuestro sector?</div>
+          <div class="q-sub">Diseño, arquitectura, música, cine, moda, fotografía. No solo los obvios.</div>
+          <textarea name="referentes" class="tall" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">¿Hay marcas que admiréis por cómo se ven o comunican, aunque no tengan nada que ver con vosotros?</div>
+          <textarea name="referentes_visuales" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-p">Proyecto</span></div>
+          <div class="q-label">¿Hay marcas que no queráis parecer? ¿Por qué?</div>
+          <textarea name="no_parecer" placeholder="Escribe aquí..."></textarea>
+        </div>
+      </div>
+
+      <!-- VIII — Canales y desarrollo -->
+      <div class="section" data-section="VIII — Canales y desarrollo">
+        <div class="section-header">
+          <span class="section-num">VIII</span>
+          <span class="section-title">Canales y desarrollo</span>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-p">Proyecto</span></div>
+          <div class="q-label">¿En qué canales vivirá principalmente esta identidad?</div>
+          <div class="pill-group">
+            <div class="pill-opt"><input type="checkbox" name="canales[]" id="c1" value="Web / app"><label for="c1">Web / app</label></div>
+            <div class="pill-opt"><input type="checkbox" name="canales[]" id="c2" value="Redes sociales"><label for="c2">Redes sociales</label></div>
+            <div class="pill-opt"><input type="checkbox" name="canales[]" id="c3" value="Espacio físico"><label for="c3">Espacio físico</label></div>
+            <div class="pill-opt"><input type="checkbox" name="canales[]" id="c4" value="Editorial / print"><label for="c4">Editorial / print</label></div>
+            <div class="pill-opt"><input type="checkbox" name="canales[]" id="c5" value="Packaging"><label for="c5">Packaging</label></div>
+            <div class="pill-opt"><input type="checkbox" name="canales[]" id="c6" value="Eventos"><label for="c6">Eventos</label></div>
+            <div class="pill-opt"><input type="checkbox" name="canales[]" id="c7" value="Publicidad exterior"><label for="c7">Publicidad exterior</label></div>
+            <div class="pill-opt"><input type="checkbox" name="canales[]" id="c8" value="Motion / vídeo"><label for="c8">Motion / vídeo</label></div>
+          </div>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-p">Proyecto</span></div>
+          <div class="q-label">¿La identidad necesita adaptarse a múltiples idiomas o alfabetos?</div>
+          <textarea name="idiomas" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-p">Proyecto</span></div>
+          <div class="q-label">¿Habrá sub-marcas o líneas que deban convivir bajo esta identidad?</div>
+          <textarea name="submarcas" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-p">Proyecto</span></div>
+          <div class="q-label">¿Cuál es el plazo ideal?</div>
+          <textarea name="plazo" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-meta"><span class="tag tag-c">Creativo</span></div>
+          <div class="q-label">¿Cómo sabréis que este proyecto ha sido un éxito?</div>
+          <div class="q-sub">¿Qué cambio queréis haber conseguido cuando terminemos?</div>
+          <textarea name="exito" placeholder="Escribe aquí..."></textarea>
+        </div>
+
+        <div class="q">
+          <div class="q-label">¿Hay algo sobre vosotros o este proyecto que no os hayamos preguntado y que debamos saber?</div>
+          <textarea name="extra" class="tall" placeholder="Escribe aquí..."></textarea>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- Datos de contacto -->
+      <div class="section" data-section="Datos">
+        <div class="section-header">
+          <span class="section-num">—</span>
+          <span class="section-title">Vuestros datos</span>
+        </div>
+        <div class="two-col">
+          <div class="q">
+            <div class="q-label">Nombre de la marca</div>
+            <input type="text" name="nombre_marca" placeholder="Ej. Congregación X" required>
+          </div>
+          <div class="q">
+            <div class="q-label">Vuestra persona de contacto</div>
+            <input type="text" name="contacto" placeholder="Nombre y apellido">
+          </div>
+          <div class="q">
+            <div class="q-label">Email de contacto</div>
+            <input type="email" name="email" placeholder="hola@marca.com" required>
+          </div>
+          <div class="q">
+            <div class="q-label">Web o Instagram (si existe)</div>
+            <input type="text" name="web" placeholder="@marca o www.marca.com">
+          </div>
+        </div>
+      </div>
+
+      <div class="submit-block">
+        <p class="submit-note">Cuanto más honesto y específico, más útil.<br>No busques la respuesta correcta — busca la verdadera.</p>
+        <button type="submit" class="btn-submit">
+          Enviar briefing
+          <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Success -->
+    <div id="success">
+      <h2>Gracias.</h2>
+      <p>Hemos recibido vuestro briefing. Nos ponemos en contacto pronto.</p>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p>Dirección Creativa — Briefing de identidad</p>
+  <p>Cuanto más honesto y específico, más útil.</p>
+</footer>
+
+<script>
+  // Progress bar
+  const progress = document.getElementById('progress');
+  const floater = document.getElementById('floater');
+  const sections = document.querySelectorAll('.section[data-section]');
+
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.body.scrollHeight - window.innerHeight;
+    progress.style.width = Math.min(100, (scrolled / total) * 100) + '%';
+
+    // Section floater
+    let current = '';
+    sections.forEach(s => {
+      const top = s.getBoundingClientRect().top;
+      if (top < window.innerHeight * 0.4) {
+        current = s.dataset.section;
+      }
+    });
+    if (current) {
+      floater.textContent = current;
+      floater.classList.add('show');
+    } else {
+      floater.classList.remove('show');
+    }
+  });
+
+  // Intersection observer — fade in sections
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+  // Form submission via fetch (Formspree AJAX)
+  const form = document.getElementById('briefing-form');
+  const successDiv = document.getElementById('success');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('.btn-submit');
+    btn.textContent = 'Enviando...';
+    btn.disabled = true;
+
+    try {
+      const data = new FormData(form);
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        form.style.display = 'none';
+        successDiv.style.display = 'block';
+        window.scrollTo({ top: successDiv.offsetTop - 80, behavior: 'smooth' });
+      } else {
+        btn.textContent = 'Error al enviar. Inténtalo de nuevo.';
+        btn.disabled = false;
+      }
+    } catch {
+      btn.textContent = 'Error al enviar. Inténtalo de nuevo.';
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
